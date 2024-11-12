@@ -3,7 +3,9 @@ import { PrismaClient } from '@prisma/client';
 
 const router = express.Router();
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient ({
+  log: ['query', 'info', 'warn', 'error']
+});
 
 //SIGNUP//
 router.post('/signup', async (req,res) => {
@@ -11,7 +13,7 @@ router.post('/signup', async (req,res) => {
   const { email, password, username } = req.body;
   
   //validate the user inputs
-  if(!email || !password || !username) {
+  if(!email || !password || !first_name || !last_name) {
     return res.status(400).send('Missing required fields');
   }
 
@@ -32,8 +34,9 @@ router.post('/signup', async (req,res) => {
   const user = await prisma.user.create({
     data: {
       email: email,
-      username: username,
-      password: hashedPassword
+      password: hashedPassword,
+      first_name: first_name,
+      last_name: last_name
     },
   });
   //send response back to user

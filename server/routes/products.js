@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import multer from 'multer';
 import { PrismaClient } from '@prisma/client';
 
@@ -50,3 +50,5 @@ router.get('/:id', async (req, res) => {
 });
 
 //TODO: purchase
+
+export default router;

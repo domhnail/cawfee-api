@@ -9,3 +9,22 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+
+//models
+model Customer {
+  customer_id    Int   @id @default(autoincrement())
+  email String
+  password String
+  first_name String
+  last_name String
+
+}
+
+model Product {
+  product_id    Int   @id @default(autoincrement())
+  name  String
+  description String
+  cost  Float
+  image_filename  String
+}
