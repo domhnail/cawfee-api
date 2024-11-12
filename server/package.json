@@ -1,0 +1,21 @@
+{
+  "name": "cawfee-server",
+  "version": "1.0.0",
+  "description": "The backend for the cawfee store.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cole O'Donnell",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "node.js": "^0.0.1-security",
+    "prisma": "^5.22.0"
+  }
+}
