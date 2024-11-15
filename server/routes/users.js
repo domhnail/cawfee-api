@@ -1,24 +1,24 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
+import { hashPassword, comparePassword } from '../lib/utility.js';
 
 const router = express.Router();
+//  log: ['query', 'info', 'warn', 'error']
 
-const prisma = new PrismaClient ({
-  log: ['query', 'info', 'warn', 'error']
-});
+const prisma = new PrismaClient ();
 
 //SIGNUP//
 router.post('/signup', async (req,res) => {
-  //receiving user inputs
-  const { email, password, username } = req.body;
+  //receiving customer inputs
+  const { email, password, first_name, last_name } = req.body;
   
-  //validate the user inputs
+  //validate the customer inputs
   if(!email || !password || !first_name || !last_name) {
     return res.status(400).send('Missing required fields');
   }
 
-  //check if user already exists
-  const existingUser = await prisma.user.findUnique({
+  //check if customer already exists
+  const existingUser = await prisma.customer.findUnique({
     where: {
       email: email,
     }
@@ -30,8 +30,8 @@ router.post('/signup', async (req,res) => {
   //hash password
   const hashedPassword = await hashPassword(password);
 
-  //post user entry to database
-  const user = await prisma.user.create({
+  //post customer entry to database
+  const customer = await prisma.customer.create({
     data: {
       email: email,
       password: hashedPassword,
@@ -39,14 +39,14 @@ router.post('/signup', async (req,res) => {
       last_name: last_name
     },
   });
-  //send response back to user
-  res.send({'user' : email});
+  //send response back to customer
+  res.send({'customer' : email});
 });
 
 
 //LOG IN//
 router.post('/login', async (req,res) => {
-  //receive user inputs
+  //receive customer inputs
   const { email, password } = req.body;
 
   //validate inputs
@@ -54,8 +54,8 @@ router.post('/login', async (req,res) => {
     return res.status(400).send('Missing required fields');
   }
 
-  //find user in db
-  const existingUser = await prisma.user.findUnique({
+  //find customer in db
+  const existingUser = await prisma.customer.findUnique({
     where: {
       email: email,
     }
@@ -70,10 +70,10 @@ router.post('/login', async (req,res) => {
     return res.status(401).send('Invalid password');
   }
 
-  //setup user session
-  req.session.user = existingUser.email;
+  //setup customer session
+  req.session.customer = existingUser.email;
   req.session.user_id - existingUser.email;
-  console.log("User session " + req.session.user);
+  console.log("User session " + req.session.customer);
 
   //send response
   res.send('Login route');
@@ -89,7 +89,7 @@ router.post('/logout', (req,res) => {
 
 //GET SESSION//
 router.get('/getsession', (req,res) => {
-  res.send({'user' : req.session.user});
+  res.send({'customer' : req.session.customer});
 });
 
 export default router;
