@@ -50,5 +50,22 @@ router.get('/:id', async (req, res) => {
 });
 
 //TODO: purchase
+router.get('/purchase/:id', async (req,res) => {
+  const id = req.params.id;
+
+  //search table for id
+  const product = await prisma.product.findUnique({
+    where: {
+      id: parseInt(id),
+    },
+  });
+
+  //404 for when product doesn't exist
+  if (!product) {
+    res.status(404).json({message: 'Product not found.'})
+  } else {
+    res.status(200).json({product},'  Added to cart')
+  }
+} )
 
 export default router;

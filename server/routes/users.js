@@ -5,7 +5,9 @@ import { hashPassword, comparePassword } from '../lib/utility.js';
 const router = express.Router();
 //  log: ['query', 'info', 'warn', 'error']
 
-const prisma = new PrismaClient ();
+const prisma = new PrismaClient ({
+  log: ['query', 'info', 'warn', 'error']
+});
 
 //SIGNUP//
 router.post('/signup', async (req,res) => {
