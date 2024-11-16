@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client';
 import { hashPassword, comparePassword } from '../lib/utility.js';
 
 const router = express.Router();
-//  log: ['query', 'info', 'warn', 'error']
 
 const prisma = new PrismaClient ({
   log: ['query', 'info', 'warn', 'error']
