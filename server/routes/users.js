@@ -91,7 +91,12 @@ router.post('/logout', (req,res) => {
 
 //GET SESSION//
 router.get('/getsession', (req,res) => {
-  res.send({'customer' : req.session});
+  if (req.session.email){
+    res.send({'customer' : req.session});
+  }
+  else {
+    res.status(401).send('Not logged in.');
+  }
 });
 
 export default router;

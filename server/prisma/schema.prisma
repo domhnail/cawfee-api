@@ -10,21 +10,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 //models
 model Customer {
-  customer_id    Int   @id @default(autoincrement())
-  email String @unique
-  password String
-  first_name String
-  last_name String
-
+  customer_id Int    @id @default(autoincrement())
+  email       String @unique
+  password    String
+  first_name  String
+  last_name   String
 }
 
 model Product {
-  product_id    Int   @id @default(autoincrement())
-  name  String
-  description String
-  cost  Float
-  image_filename  String
+  product_id     Int            @id @default(autoincrement())
+  name           String
+  description    String
+  cost           Float
+  image_filename String
+  PurchaseItem   PurchaseItem[]
+}
+
+model Purchase {
+  purchase_id   Int            @id @default(autoincrement())
+  customer_id   Int
+  street        String
+  city          String
+  province      String
+  country       String
+  postal_code   String
+  credit_card   Int
+  credit_expire Int
+  credit_cvv    Int
+  invoice_amt   Float
+  invoice_tax   Float
+  invoice_total Float
+  order_date    String
+  PurchaseItem  PurchaseItem[]
+}
+
+model PurchaseItem {
+  purchase_id Int
+  product_id  Int
+  Purchase    Purchase @relation(fields: [purchase_id], references: [purchase_id])
+  Product     Product  @relation(fields: [product_id], references: [product_id])
+  quantity    Int
+
+  @@id([purchase_id, product_id])
 }
