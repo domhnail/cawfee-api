@@ -72,9 +72,10 @@ router.post('/login', async (req,res) => {
   }
 
   //setup customer session
-  req.session.customer = existingUser.email;
-  req.session.user_id - existingUser.email;
-  console.log("User session " + req.session.customer);
+  req.session.email = existingUser.email;
+  req.session.customer_id = existingUser.customer_id;
+  req.session.first_name = existingUser.first_name;
+  req.session.last_name = existingUser.last_name;
 
   //send response
   res.send('Login route');
@@ -90,7 +91,7 @@ router.post('/logout', (req,res) => {
 
 //GET SESSION//
 router.get('/getsession', (req,res) => {
-  res.send({'customer' : req.session.customer});
+  res.send({'customer' : req.session});
 });
 
 export default router;
