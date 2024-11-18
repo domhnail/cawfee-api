@@ -12,11 +12,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// cors middleware
-// app.use(cors({
-//   origin: 'http://localhost:5173', // react client
-//   credentials: true
-// }));
+//cors middleware
+app.use(cors({
+  credentials: true
+}));
 
 // session middleware
 app.use(session({

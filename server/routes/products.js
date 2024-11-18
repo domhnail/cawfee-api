@@ -34,23 +34,28 @@ router.get('/:id', async (req, res) => {
   //get id
   const id = req.params.id;
 
-  //search table for id
-  const product = await prisma.product.findUnique({
-    where: {
-      id: parseInt(id),
-    },
-  });
-
-  //404 for when product doesn't exist
-  if (!product) {
-    res.status(404).json({message: 'Product not found.'})
-  } else {
-    res.status(200).json({product})
+  if (parseInt(id)){ //validation ID is a workable int
+    //search table for id
+    const product = await prisma.product.findUnique({
+      where: {
+        product_id: parseInt(id),
+      },
+    });
+    //404 for when product doesn't exist
+    if (!product) {
+      res.status(404).json({message: 'Product not found.'})
+    } 
+    //returning product when everything is correct
+    else {
+      res.status(200).json({product})
+    }
+  } else  { //returning invalid if the product id is bad
+    res.status(400).json({message: 'Product ID is invalid.'})
   }
 });
 
 //TODO: purchase
-router.get('/purchase/:id', async (req,res) => {
+router.post('/purchase/:id', async (req,res) => {
   const id = req.params.id;
 
   //search table for id
