@@ -95,9 +95,11 @@ router.post('/purchase', async (req,res) => {
   let productId = [];
   let productQuantity = {};
 
+  const cartItems = cart.split(',');
+
   //counting quantities of products
-  for (let index = 0; index < cart.length; index++) {
-    const product = parseInt(cart[index]);
+  for (let index = 0; index < cartItems.length; index++) {
+    const product = parseInt(cartItems[index]);
     if (product) {
       productId.push(product);
       productQuantity[product] = (productQuantity[product] || 0) + 1; //increment quantity for the same product
