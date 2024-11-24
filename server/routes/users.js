@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { hashPassword, comparePassword } from '../lib/utility.js';
+import PasswordValidator from 'password-validator';
 
 const router = express.Router();
 
@@ -26,6 +27,20 @@ router.post('/signup', async (req,res) => {
   });
   if (existingUser) {
     return res.status(400).send('User already exists');
+  }
+
+  //create a schema
+  var schema = new PasswordValidator();
+  
+  //add properties to it
+  schema
+  .is().min(8)                                    //minimum length 8
+  .has().uppercase()                              //must have uppercase letters
+  .has().lowercase()                              //must have lowercase letters
+  .has().digits(1);                                //must have at least 1 digit
+
+  if (!schema.validate(password)) {
+    return res.status(401).send('Password did not meet requirements: ' + schema.validate('joke', {list: true}));
   }
 
   //hash password
@@ -65,6 +80,7 @@ router.post('/login', async (req,res) => {
     return res.status(404).send('User not found');
   }
 
+  
   //validate password
   const passwordMatch = await comparePassword(password, existingUser.password);
   if (!passwordMatch) {
