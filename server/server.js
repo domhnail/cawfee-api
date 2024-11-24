@@ -3,6 +3,9 @@ import cors from 'cors';
 import session from 'express-session';
 import usersRouter from './routes/users.js';
 import productRouter from './routes/products.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const port = process.env.PORT || 3000;
 const app = express();
