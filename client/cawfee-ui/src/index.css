@@ -1,0 +1,47 @@
+/* border */
+.border-mocha {
+  border: 2px solid #654321;
+}
+
+/* background */
+.background-mocha {
+  background-color: #7B5632;
+}
+
+/* foreground */
+.foreground-latte {
+  background-color: #F5F5DC;
+  color: #2C1608;
+}
+
+/* font */
+.font-dark-chocolate {
+  color: #3D1C07;
+}
+
+.hover-dark-chocolate {
+  
+}
+
+/* buttons */
+.btn-espresso {
+  background-color: #2C1205;
+  border-color: #2C1205;
+  color: #F5F5DC;
+}
+
+.btn-espresso:hover {
+  background-color: #3D1C07;
+  border-color: #3D1C07;
+  color: #fff;
+}
+
+
+
+body {
+  /* background-image: url('assets/old-film-grain-texture-effect-and-vintage-photo-effect-png.png'); */
+  /* background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed; */
+  filter: brightness(0.8) contrast(1.1) saturate(1.1);
+}

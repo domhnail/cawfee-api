@@ -1,21 +1,50 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from './ui/Sidebar'
+import Navbar from './ui/Nav';
+import { useState, useEffect } from 'react';
+const apiHost = import.meta.env.VITE_APP_HOST;
+import { ProductsContext } from './context';
 
 function App() {
+  const [products, setProducts] = useState([]);
+
+  const apiUrl = `${apiHost}/api/products/all`;
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        console.log('Fetching data...');
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log('Data fetched successfully.');
+        const data = await response.json();
+        setProducts(data.product);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setProducts([]);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
-    <>
-    <h1>welcome to cawfee</h1>
-    <p>This is the master page.</p>
-    <div>
-      <Sidebar />
-    </div>
-    <div>
-      <br></br>
-      <Outlet />
-      <p>This is the child page.</p>
-    </div>
-    </>
+    products.length > 0 ? (
+      <ProductsContext.Provider value={{ products }}>
+        <div className="container-fluid p-0">
+            <Navbar />
+          <div className="container">
+            <main className="d-flex flex-column flex-grow-1">
+              <div className="container">
+                <Outlet />
+              </div>
+            </main>
+          </div>
+        </div>
+      </ProductsContext.Provider>
+    ) : (
+      <p>No products available.</p>
+    )
   )
 }
-
 export default App
