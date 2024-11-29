@@ -52,12 +52,12 @@ export default function Cart() {
         </div>
         <div className='align-items-center justify-content-center my-3 mx-5 col-3'>
             <div className='d-flex foreground-latte border-mocha'>
-              <p className='fs-1 m-1'>{subTotal.toFixed(2)}</p>
+              <p className='fs-1 m-1'>${subTotal.toFixed(2)}</p>
             </div>
         </div>
       </div>
         <Link to={`/`} className='text-decoration-none'><button type='submit' className='col-4 rounded-0 btn btn-espresso mx-1 my-2 mt-3'>continue shopping</button></Link>
-        <Link to={`/`} className='text-decoration-none'><button type='submit' className='col-4 rounded-0 btn btn-espresso mx-1 my-2 mt-3'>checkout</button></Link>
+        <Link to={`/checkout`} className='text-decoration-none'><button type='submit' className='col-4 rounded-0 btn btn-espresso mx-1 my-2 mt-3'>checkout</button></Link>
     </Container>
   );
 }
