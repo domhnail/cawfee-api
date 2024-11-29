@@ -16,13 +16,9 @@ export default function Details() {
   return (
     <Container>
       <h1 className='border-mocha my-3 p-1 foreground-latte text-center'>{product.name}</h1>
-      <div className='row row-cols-2 d-flex align-items-center justify-content-center my-3'>
-        <div className='card text-center shadow-lg border-mocha foreground-latte my-3'>
-          <div className='card-body'>
-            <img className='img-fluid mb-3' src={`${apiHost}/images/${product.image_filename}`} alt={product.name} />
-          </div>
-        </div>
-        <div className='card text-center border-mocha foreground-latte my-3 py-3'>
+      <div className='row row-cols-2 d-flex align-items-center my-3'>
+        <img className='img-fluid' src={`${apiHost}/images/${product.image_filename}`} alt={product.name} />
+        <div className='card text-center border-mocha foreground-latte my-3 py-3 shadow-lg'>
           <p className='font-dark-chocolate fs-4'>${product.cost}</p>
           <p className='font-dark-chocolate fs-4'>{product.description}</p>
           <Link to={`/`} className='text-decoration-none'><button type='submit' className='col-4 rounded-0 btn btn-espresso mx-1 mt-3'>no thanks</button></Link>

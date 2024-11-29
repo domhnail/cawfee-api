@@ -19,8 +19,12 @@
   color: #3D1C07;
 }
 
-.hover-dark-chocolate {
-  
+.link-dark-chocolate {
+  color: #3D1C07;
+}
+
+.link-dark-chocolate:hover {
+  color: #5E412F
 }
 
 /* buttons */
@@ -36,12 +40,68 @@
   color: #fff;
 }
 
-
-
+/* body styling */
 body {
   /* background-image: url('assets/old-film-grain-texture-effect-and-vintage-photo-effect-png.png'); */
   /* background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed; */
   filter: brightness(0.8) contrast(1.1) saturate(1.1);
+}
+
+/* .glow {
+  position: relative;
+  display: inline-block;
+}
+
+.glow:hover::before {
+  animation-play-state: running;
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50%;
+  background: rgba(39, 85, 29, 0.5);
+  z-index: -1;
+  animation: glow 2s ease-in-out infinite alternate;
+} */
+
+/* @keyframes glow {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.5); }
+} */
+
+/* Silent Hill 2 - Main Background */
+.sh2-background {
+  background-color: #303030;
+}
+
+/* Silent Hill 2 - Blood Red (Alternate Lights) */
+.sh2-blood-red {
+  color: #852B4B;
+}
+
+/* Silent Hill 2 - Misty Gray (Forest Area, etc.) */
+.sh2-misty-gray {
+  background-color: #696969;
+}
+
+/* Silent Hill 2 - Dirty Yellow (Lighter areas) */
+.sh2-dirty-yellow {
+  color: #C0A853;
+  background-color: #B1974E;
+}
+
+/* Silent Hill 2 - Dark Teal (Water, certain environments) */
+.sh2-dark-teal {
+  color: #1D6154;
+  background-color: #0C3831;
+}
+
+/* Silent Hill 2 - Dark Purple (Darker areas, Nightmare scenes) */
+.sh2-dark-purple {
+  color: #7030A0;
+  background-color: #4B266D;
 }
