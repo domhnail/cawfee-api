@@ -8,6 +8,7 @@ function App() {
   const [products, setProducts] = useState([]);
 
   const apiUrl = `${apiHost}/api/products/all`;
+  //t0d0, isLoggedIn
 
   useEffect(() => {
     async function fetchData() {
@@ -32,10 +33,12 @@ function App() {
     products.length > 0 ? (
       <ProductsContext.Provider value={{ products }}>
         <div className="container-fluid p-0">
+          {/* rendering navbar here */}
             <Navbar />
           <div className="container">
             <main className="d-flex flex-column flex-grow-1">
               <div className="container">
+                {/* rendering all components here */}
                 <Outlet />
               </div>
             </main>
