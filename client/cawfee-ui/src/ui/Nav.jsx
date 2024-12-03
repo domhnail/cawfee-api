@@ -21,6 +21,9 @@ export default function Navbar() {{
                 <Link to="/cart" className="nav-link fs-3 link-dark-chocolate glow" href="#">Cart</Link>
                 </li>
                 <li className="nav-item">
+                <Link to="/signup" className="nav-link fs-3 link-dark-chocolate glow" href="#">Sign Up</Link>
+                </li>
+                <li className="nav-item">
                   <Link to="/login" className="nav-link fs-3 link-dark-chocolate" href="#">Login</Link>
                 </li>
                 <li className="nav-item">
