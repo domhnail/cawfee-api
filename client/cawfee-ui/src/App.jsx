@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Navbar from './ui/Nav';
 import { useState, useEffect } from 'react';
 const apiHost = import.meta.env.VITE_APP_HOST;

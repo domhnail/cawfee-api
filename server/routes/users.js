@@ -60,6 +60,7 @@ router.post('/signup', async (req,res) => {
 });
 
 
+
 //LOG IN//
 router.post('/login', async (req,res) => {
   //receive customer inputs
@@ -94,13 +95,14 @@ router.post('/login', async (req,res) => {
   req.session.last_name = existingUser.last_name;
 
   //send response
-  res.send('Login route');
+  res.send({success: true, message: 'Login successful'});
 });
 
 
 //LOG OUT//
 router.post('/logout', (req,res) => {
   req.session.destroy();
+  res.clearCookie('connect.sid');
   res.send('Logged out.');
 });
 

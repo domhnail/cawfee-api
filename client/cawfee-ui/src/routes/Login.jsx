@@ -18,16 +18,32 @@ export default function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+        credentials: 'include', //sending cookie
       });
 
       if (response.ok) {
         //calling navigate to duck a page refresh
+        await checkSession();
         navigate('/');
       } else {
         console.error('Error:', await response.text());
       }
     } catch (error) {
       console.error('Fetch error:', error);
+    }
+  }
+
+  async function checkSession() {
+    const sessionResponse = await fetch(`${apiHost}/api/users/getsession`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+  
+    if (sessionResponse.ok) {
+      const sessionData = await sessionResponse.json();
+      console.log('User session:', sessionData.customer); // Check if session data is present
+    } else {
+      console.error('Not logged in');
     }
   }
 
