@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import { GlowCapture, Glow } from '@codaworks/react-glow';
 import { useNavigate } from 'react-router-dom';
+import IconShoppingCart from './CartIcon';
+
 const apiHost = import.meta.env.VITE_APP_HOST;
 
 const apiUrl = `${apiHost}/api/users/logout`;
 
 //logout function
-function userLogout(navigate) {
+function userLogout(navigate, setIsLoggedIn) {
   async function postData() {
     const response = await fetch(apiUrl, {
       //sending the post to the API
@@ -18,8 +20,9 @@ function userLogout(navigate) {
     });
 
     if (response.ok) {
+      setIsLoggedIn(false)
       //calling navigate to duck a page refresh
-      navigate('/logout');
+      await navigate('/logout');
     } else {
       console.error('Error:', await response.text());
     }
@@ -27,7 +30,8 @@ function userLogout(navigate) {
   postData();
 }
 
-export default function Navbar() {
+
+export default function Navbar({ isLoggedIn , setIsLoggedIn}) {
   const navigate = useNavigate();
     return (
       <GlowCapture>
@@ -44,18 +48,22 @@ export default function Navbar() {
                 <li className="nav-item">
                 <Link to="/" className="nav-link fs-3 link-dark-chocolate glow" href="#">Home</Link>
                 </li>
+                {!isLoggedIn ? (
+                  <>
+                    <li className="nav-item">
+                      <Link to="/signup" className="nav-link nav-link fs-3 link-dark-chocolate glow">Sign Up</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/login" className="nav-link nav-link fs-3 link-dark-chocolate glow">Login</Link>
+                    </li>
+                  </>
+                ) : (
+                  <li className="nav-item">
+                    <button className="nav-link fs-3 link-dark-chocolate glow" onClick={() => userLogout(navigate, setIsLoggedIn)}>Logout</button>
+                  </li>
+                )}
                 <li className="nav-item">
-                <Link to="/cart" className="nav-link fs-3 link-dark-chocolate glow" href="#">Cart</Link>
-                </li>
-                <li className="nav-item">
-                <Link to="/signup" className="nav-link fs-3 link-dark-chocolate glow" href="#">Sign Up</Link>
-                </li>
-                <li className="nav-item">
-                <Link to="/login" className="nav-link fs-3 link-dark-chocolate" href="#">Login</Link>
-                </li>
-                <li className="nav-item">
-                {/* calls to logout function to navigate instead of directly navigating */}
-                <button className="nav-link fs-3 link-dark-chocolate" onClick={() => userLogout(navigate)}>Logout</button>
+                <Link to="/cart" className="nav-link fs-3 link-dark-chocolate glow" href="#"><IconShoppingCart /></Link>
                 </li>
               </ul>
             </div>

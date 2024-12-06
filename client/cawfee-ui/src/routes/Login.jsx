@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
-const apiHost = import.meta.env.VITE_APP_HOST;
 import { Container } from 'react-bootstrap';
+import { useOutletContext } from "react-router-dom";
+
+const apiHost = import.meta.env.VITE_APP_HOST;
 
 export default function Login() {
+  const { setIsLoggedIn } = useOutletContext();
+  const navigate = useNavigate();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const navigate = useNavigate(); 
-
   const apiUrl = `${apiHost}/api/users/login`;
 
   //login function
@@ -22,8 +24,9 @@ export default function Login() {
       });
 
       if (response.ok) {
-        //calling navigate to duck a page refresh
+        //checking the session first to make sure it worked
         await checkSession();
+        //calling navigate to duck a page refresh
         navigate('/');
       } else {
         console.error('Error:', await response.text());
@@ -41,8 +44,10 @@ export default function Login() {
   
     if (sessionResponse.ok) {
       const sessionData = await sessionResponse.json();
-      console.log('User session:', sessionData.customer); // Check if session data is present
+      console.log('User session:', sessionData.customer); //check if there's a session
+      setIsLoggedIn(true); //set state to true
     } else {
+      setIsLoggedIn(false);
       console.error('Not logged in');
     }
   }

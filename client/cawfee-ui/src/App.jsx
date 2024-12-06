@@ -6,9 +6,9 @@ import { ProductsContext } from './context';
 
 function App() {
   const [products, setProducts] = useState([]);
-
+  const [isLoggedIn,setIsLoggedIn] = useState(false);
   const apiUrl = `${apiHost}/api/products/all`;
-  //t0d0, isLoggedIn
+  const getSessionUrl = `${apiHost}/api/users/getsession`;
 
   useEffect(() => {
     async function fetchData() {
@@ -29,17 +29,41 @@ function App() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    // Check session status
+    async function checkSession() {
+      try {
+        const response = await fetch(getSessionUrl, {
+          method: 'GET',
+          credentials: 'include', // Make sure to include credentials
+        });
+        if (response.ok) {
+          const data = await response.json();
+          // If the user is logged in, set isLoggedIn to true
+          setIsLoggedIn(true);
+        } else {
+          // If session is not found, set to false
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error('Error checking session:', error);
+        setIsLoggedIn(false);
+      }
+    }
+    checkSession();
+  }, [getSessionUrl]);
+
   return (
     products.length > 0 ? (
       <ProductsContext.Provider value={{ products }}>
         <div className="container-fluid p-0">
           {/* rendering navbar here */}
-            <Navbar />
+            <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
           <div className="container">
             <main className="d-flex flex-column flex-grow-1">
               <div className="container">
                 {/* rendering all components here */}
-                <Outlet />
+                <Outlet context={{ isLoggedIn, setIsLoggedIn}}/>
               </div>
             </main>
           </div>
