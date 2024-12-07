@@ -30,19 +30,19 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Check session status
+    //check session status
     async function checkSession() {
       try {
         const response = await fetch(getSessionUrl, {
           method: 'GET',
-          credentials: 'include', // Make sure to include credentials
+          credentials: 'include', //make sure to include credentials
         });
         if (response.ok) {
           const data = await response.json();
-          // If the user is logged in, set isLoggedIn to true
+          //if the user is logged in, set isLoggedIn to true
           setIsLoggedIn(true);
         } else {
-          // If session is not found, set to false
+          //if session is not found, set to false
           setIsLoggedIn(false);
         }
       } catch (error) {

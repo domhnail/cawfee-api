@@ -39,9 +39,6 @@ model Purchase {
   credit_card   Int
   credit_expire Int
   credit_cvv    Int
-  invoice_amt   Float
-  invoice_tax   Float
-  invoice_total Float
   PurchaseItem  PurchaseItem[]
 }
 

@@ -80,10 +80,10 @@ router.get('/:id', async (req, res) => {
 //TODO: purchase
 router.post('/purchase', async (req,res) => {
   //init fields
-  const {street, city, province, country, postal_code, credit_card, credit_expire, credit_cvv, invoice_amt, invoice_tax, invoice_total, cart} = req.body;
+  const {street, city, province, country, postal_code, credit_card, credit_expire, credit_cvv, cart} = req.body;
 
   //checking all fields are filled.
-  if(!street || !city || !province || !country || !postal_code || !credit_card || !credit_expire || !credit_cvv || !invoice_amt || !invoice_tax || !invoice_total || !cart) {
+  if(!street || !city || !province || !country || !postal_code || !credit_card || !credit_expire || !credit_cvv || !cart) {
     return res.status(400).send('Missing required fields');
   }
 
@@ -117,9 +117,6 @@ router.post('/purchase', async (req,res) => {
       credit_card: parseInt(credit_card),
       credit_expire: parseInt(credit_expire),
       credit_cvv: parseInt(credit_cvv),
-      invoice_amt: parseFloat(invoice_amt),
-      invoice_tax: parseFloat(invoice_tax),
-      invoice_total: parseFloat(invoice_total),
       customer_id: req.session.customer_id,
     },
   });

@@ -5,12 +5,15 @@ const apiHost = import.meta.env.VITE_APP_HOST;
 import { useContext } from 'react';
 import { ProductsContext } from '../context';
 import { useState } from 'react';
+import { useOutletContext } from "react-router-dom";
 
 export default function Cart() {
+  //getting context
+  const { isLoggedIn } = useOutletContext();
   //getting cookies
   const [cookies, setCookie, removeCookie] = useCookies('cart');
   const { products } = useContext(ProductsContext);
-  //splitting the cookie
+  //checking there's a cart then splitting the cookie
   const cartItems = cookies.cart ? cookies.cart.split(',') : [];
   //parsing the quantities, object with id as key
   let productQuantity = {};
@@ -18,36 +21,42 @@ export default function Cart() {
   let subTotal = 0;
   let tax;
   let total;
-  for (let index = 0; index < cartItems.length; index++) {
-    const product = parseInt(cartItems[index]);
-    if (product) {
-      productQuantity[product] = (productQuantity[product] || 0) + 1; //increment quantity for the same product
+  if (cartItems.length > 0) { //don't process if its empty
+    for (let index = 0; index < cartItems.length; index++) {
+      const product = parseInt(cartItems[index]);
+      if (product) {
+        productQuantity[product] = (productQuantity[product] || 0) + 1; //increment quantity for the same product
+      }
+      subTotal += parseFloat(products[cartItems[index]-1].cost);
+      tax = subTotal*.15;
+      total = subTotal + tax;
     }
-    subTotal += parseFloat(products[cartItems[index]-1].cost);
-    tax = subTotal*.15;
-    total = subTotal + tax;
   }
-    // inside your component
+
+  //visible products in cart based on productQuantity object
   const [visibleItems, setVisibleItems] = useState(new Set(Object.keys(productQuantity)));
 
   function removeItem(product_id) {
-    // filter out the product_id from the cookie cart
-    const updatedCart = cartItems.filter((item) => parseInt(item) !== product_id);
-    
-    // update the cookie
-    if (updatedCart.length > 0) {
-      setCookie('cart', updatedCart.join(','), { path: '/' });
-    } else {
-      removeCookie('cart', { path: '/' });
-    }
+  //filter out the product_id from the cookie cart
+  const updatedCart = cartItems.filter((item) => item !== product_id);
 
-    // update the visible items
-    setVisibleItems((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(String(product_id)); // remove from visibility
-      return newSet;
-    });
+  //check if the cart is empty after the removal
+  if (updatedCart.length > 0) {
+    //if the cart isn't empty, URL-encode the updated cart and set it in the cookie
+    const updatedCartString = updatedCart.join(',');
+    setCookie('cart', updatedCartString, { path: '/' });
+  } else {
+    //if the cart is empty, remove the cart cookie
+    removeCookie('cart', { path: '/' });
   }
+
+  //update the visible items in the UI
+  setVisibleItems((prev) => {
+    const newSet = new Set(prev);
+    newSet.delete(String(product_id)); //remove from the visible items set
+    return newSet;
+  });
+}
 
   //sort products by quantity
   const sortedProducts = Object.entries(productQuantity).sort((a, b) => b[1] - a[1]);
@@ -80,17 +89,13 @@ export default function Cart() {
                   <p>total: ${(products[productId - 1].cost * quantity).toFixed(2)}</p>
                 </div>
                 <div className="d-flex align-items-center">
-                  <button
-                    className="btn btn-espresso mx-1 my-2 mt-3 rounded-0"
-                    onClick={() => removeItem(parseInt(productId))}
-                  >
-                    remove
-                  </button>
+                  <button className="btn btn-espresso mx-1 my-2 mt-3 rounded-0" onClick={() => removeItem(productId)}>remove</button>
                 </div>
               </div>
             )
           ))}
         </div>
+                {cartItems.length > 0 ? (
         <div className='align-items-center justify-content-center my-3 mx-5 col-4'>
           <div className='d-flex flex-column foreground-latte border-mocha'>
             <p className='fs-1 m-1'>sub-total: ${subTotal.toFixed(2)}</p>
@@ -98,9 +103,36 @@ export default function Cart() {
             <p className='fs-1 m-1'>total: ${total.toFixed(2)}</p>
           </div>
         </div>
+        ) : (
+          <div className='align-items-center justify-content-center my-3 mx-5 col-4'>
+            <div className='d-flex flex-column foreground-latte border-mocha'>
+              <p className='fs-1 m-1'>zero dollars</p>
+            </div>
+          </div>
+        )}
       </div>
-        <Link to={`/`} className='text-decoration-none'><button type='submit' className='col-4 rounded-0 btn btn-espresso mx-1 my-2 mt-3'>continue shopping</button></Link>
-        <Link to={`/checkout`} className='text-decoration-none'><button type='submit' className='col-4 rounded-0 btn btn-espresso mx-1 my-2 mt-3'>checkout</button></Link>
+      <Link to={`/`} className='text-decoration-none'>
+        <button type='submit' className='col-4 rounded-0 btn btn-espresso mx-1 my-2 mt-3'>
+          continue shopping
+        </button>
+      </Link>
+      {cartItems.length > 0 ? (
+        !isLoggedIn ? (
+          <Link to={`/login`} className='text-decoration-none'>
+            <button type='submit' className='col-4 rounded-0 btn btn-espresso mx-1 my-2 mt-3'>
+              login to purchase
+            </button>
+          </Link>
+        ) : (
+          <Link to={`/checkout`} className='text-decoration-none'>
+            <button type='submit' className='col-4 rounded-0 btn btn-espresso mx-1 my-2 mt-3'>
+              checkout
+            </button>
+          </Link>
+        )
+      ) : (
+        <p></p>
+      )}
     </Container>
   );
 }
